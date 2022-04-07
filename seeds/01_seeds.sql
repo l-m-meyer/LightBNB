@@ -29,9 +29,9 @@ INSERT INTO properties (
     active
   ) 
   VALUES 
-    (1, 'Nothin Fancy Shacklet', 'description', 'cabin_in_woods.jpg', 'the_ground.jpg', 198, 1, 1, 1, 'USA', '13 Laura Palmer Way', 'Twin Peaks', 'Utah', 75213, TRUE),
-    (2, 'Cuddle Hut', 'description', 'pillow_fort.jpg', 'feathers.jpg', 75, 2, 2, 2, 'Canada', '1313 Mockingbird Rd', 'Merrickville', 'Ontario', 'K0G 1R0', TRUE),
-    (3, 'Mushroom Kingdom', 'description', 'toadstool_treehouse.jpg', 'mushrooms.jpg', 400, 2, 3, 3, 'Canada', '404 Nature Valley Rd', 'Gravenhurst', 'Ontario', 'K0M 2K0', TRUE);
+    (1, 'Nothin Fancy Shacklet', 'description', 'cabin_in_woods.jpg', 'the_ground.jpg', 19800, 1, 1, 1, 'USA', '13 Laura Palmer Way', 'Twin Peaks', 'Utah', 75213, TRUE),
+    (2, 'Cuddle Hut', 'description', 'pillow_fort.jpg', 'feathers.jpg', 7500, 2, 2, 2, 'Canada', '1313 Mockingbird Rd', 'Merrickville', 'Ontario', 'K0G 1R0', TRUE),
+    (3, 'Mushroom Kingdom', 'description', 'toadstool_treehouse.jpg', 'mushrooms.jpg', 40000, 2, 3, 3, 'Canada', '404 Nature Valley Rd', 'Gravenhurst', 'Ontario', 'K0M 2K0', TRUE);
 
 INSERT INTO reservations (
   start_date,
