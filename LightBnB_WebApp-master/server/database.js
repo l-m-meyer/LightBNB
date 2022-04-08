@@ -111,12 +111,63 @@ exports.getAllReservations = getAllReservations;
  */
 const getAllProperties = function(options, limit = 10) {
   
+  const queryParams = [];
+
+  let queryString = `
+    SELECT properties.*,
+       AVG(property_reviews.rating) as average_rating
+      FROM properties
+      JOIN property_reviews ON properties.id = property_id
+      WHERE 1 = 1
+  `;
+
+  if (options.city) {
+    queryParams.push(`%${options.city}%`);
+    queryString += ` AND city LIKE $${queryParams.length} `;
+  }
+
+  if (options.owner_id) {
+    queryParams.push(`%${options.owner_id}%`);
+    queryString += ` AND owner_id = $${queryParams.length} `;
+  }
+
+  if (options.minimum_price_per_night 
+    && options.maximum_price_per_night) {
+    queryParams.push(`${options.minimum_price_per_night * 100}`);
+    queryParams.push(`${options.maximum_price_per_night * 100}`);
+    queryString += ` AND cost_per_night BETWEEN $${queryParams.length - 1} AND $${queryParams.length} `;
+  }
+
+  if (options.minimum_price_per_night 
+    && !options.maximum_price_per_night) {
+    queryParams.push(`${options.minimum_price_per_night * 100}`);
+    queryString += ` AND cost_per_night >= $${queryParams.length} `;
+  }
+
+  if (!options.minimum_price_per_night 
+    && options.maximum_price_per_night) {
+    queryParams.push(`${options.maximum_price_per_night * 100}`);
+    queryString += ` AND cost_per_night <= $${queryParams.length} `;
+  } 
+
+  queryString += ` GROUP BY properties.id `;
+
+  if (options.minimum_rating) {
+    queryParams.push(`${options.minimum_rating}`);
+    queryString += ` HAVING AVG(property_reviews.rating) >= $${queryParams.length} `;
+  }
+ 
+  queryParams.push(`${limit}`);
+  
+  queryString += `
+    ORDER BY cost_per_night
+    LIMIT $${queryParams.length};
+  `;
+
+  console.log(queryString, queryParams);
+
   return pool
-  .query(`SELECT properties.*, AVG(property_reviews.rating) as average_rating 
-          FROM properties
-          JOIN property_reviews ON properties.id = property_id
-          GROUP BY properties.id
-          LIMIT $1;`, [limit])
+  .query(queryString, queryParams)
   .then((result) => {
     return result.rows;
   })
